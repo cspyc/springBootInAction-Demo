@@ -8,5 +8,5 @@ import tacos.model.User;
  * @date 2020/8/18 15:12:39
  */
 public interface UserRepository extends CrudRepository<User,Long> {
-    User findByUserName(String username);
+    User findByUsername(String username);
 }
