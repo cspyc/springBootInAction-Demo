@@ -50,6 +50,9 @@ public class Order implements Serializable {
         this.tacos.add(design);
     }
 
+    @ManyToOne(targetEntity = User.class)
+    private User user;
+
     @PrePersist
     void placedAt(){
         this.placedAt = new Date();

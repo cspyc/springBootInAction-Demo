@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 import javax.sql.DataSource;
 
@@ -94,22 +93,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
+                .passwordEncoder(encoder()); auth.userDetailsService(userDetailsService)
                 .passwordEncoder(encoder());
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/design", "/orders")
-                .access("hasRole('ROLE_USER')")
-                .antMatchers("/", "/**")
+                .antMatchers("/", "/**", "/*")
                 .access("permitAll")
+                .antMatchers("/design", "/orders").access("hasRole('USER')")
                 .and()
-                .formLogin()
-                .loginPage("/login")
+                .formLogin().loginPage("/login").defaultSuccessUrl("/design")
                 .loginProcessingUrl("/authenticate")
-                .usernameParameter("user")
-                .passwordParameter("pwd");
+                .and()
+                .logout().logoutSuccessUrl("/");
     }
 
 

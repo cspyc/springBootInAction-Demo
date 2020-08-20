@@ -2,9 +2,7 @@ package tacos.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -22,23 +20,17 @@ import javax.validation.Valid;
 
 @Slf4j
 @Controller
-@RequestMapping("/orders")
+@RequestMapping("/login")
 @SessionAttributes("order")
-public class OrderController {
+public class LoginController {
     private OrderRepository orderRepository;
     private UserRepository userRepository;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository,
+    public LoginController(OrderRepository orderRepository,
                            UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
-    }
-
-    @GetMapping("/current")
-    public String orderForm(Model model) {
-        model.addAttribute("order", new Order());
-        return "orderForm";
     }
 
     @PostMapping
