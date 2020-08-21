@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
@@ -78,12 +77,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .ldif("src/resources/security/users.ldif");
 //    }
 
-    private UserDetailsService userDetailsService;
 
+    @Qualifier("userRepositoryUserDetailsService")
     @Autowired
-    public SecurityConfig(@Qualifier("userRepositoryUserDetailsService") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder encoder() {
@@ -93,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder()); auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(encoder()); auth.userDetailsService(userDetailsService)
                 .passwordEncoder(encoder());
     }
 
@@ -102,12 +99,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.authorizeRequests()
                 .antMatchers("/", "/**", "/*")
                 .access("permitAll")
-                .antMatchers("/design", "/orders").access("hasRole('USER')")
+                .antMatchers("/design", "/orders").access("hasRole('ROLE_USER')")
+
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/design")
-                .loginProcessingUrl("/authenticate")
+                .formLogin().loginPage("/login")
+
                 .and()
-                .logout().logoutSuccessUrl("/");
+                .logout().logoutSuccessUrl("/")
+                // Make H2-Console non-secured; for debug purposes
+                // tag::csrfIgnore[];
+
+                .and()
+                .csrf().ignoringAntMatchers("/h2-console/**")
+
+                // Allow pages to be loaded in frames from the same origin; needed for H2-Console
+                .and()
+                .headers()
+                .frameOptions()
+                .sameOrigin();
+
     }
 
 

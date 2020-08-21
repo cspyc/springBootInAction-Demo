@@ -1,6 +1,7 @@
-package tacos.service;
+package tacos.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,11 +9,13 @@ import org.springframework.stereotype.Service;
 import tacos.data.UserRepository;
 import tacos.model.User;
 
+import javax.naming.Name;
+
 /**
  * @author pi
  * @date 2020/8/18 15:21:09
  */
-@Service
+@Service("userRepositoryUserDetailsService")
 public class UserRepositoryUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 

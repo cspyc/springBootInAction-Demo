@@ -72,6 +72,23 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>htmlunit-driver</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -85,7 +102,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.5.3</version>
                 <configuration>
-                    <url>jdbc:h2:file:./target/taco_cloud</url>
+                    <url>jdbc:h2:~/h2_database/taco_cloud</url>
                     <user>sa</user>
                 </configuration>
             </plugin>
