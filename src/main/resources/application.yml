@@ -1,0 +1,13 @@
+logging:
+  level:
+    tacos:DEBUG
+---
+spring:
+  profiles:prod
+  datasource:
+    url: jdbc:mysql://localhost/tacoloud
+    username: tacouser
+    password: tacopasword
+logging:
+  lever:
+    tacos: WARN

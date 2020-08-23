@@ -7,8 +7,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import tacos.model.Order;
 import tacos.model.Taco;
+import tacos.model.User;
 import tacos.repository.OrderRepository;
 
+import java.awt.print.Pageable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +46,11 @@ public class JdbcOrderRepository implements OrderRepository {
         List<Taco> tacos = order.getTacos();
         tacos.forEach(t -> saveTacoToOrder(t, orderId));
         return order;
+    }
+
+    @Override
+    public List<Order> findByUserOrderByPlacedAtDesc(User user, Pageable pageable) {
+        return null;
     }
 
     private void saveTacoToOrder(Taco taco, long orderId) {
